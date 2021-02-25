@@ -1,0 +1,9 @@
+;; Keg
+
+(source gnu melpa)
+
+(package
+ (leaf-defaults
+  (recipe . (leaf-defaults :fetcher github :repo "conao3/leaf-defaults.el"))))
+
+(dev-dependency cort)
