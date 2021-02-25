@@ -49,7 +49,7 @@
 
 (defcustom leaf-defaults-after-conditions
   (leaf-list
-   :defaults   `(,@(mapcar (lambda (elm) `(,elm)) leaf--value) ,@leaf--body))
+   :defaults `(,@(mapcar (lambda (elm) `(,elm)) leaf--value) ,@leaf--body))
   "Additional `leaf-keywords' after conditional branching.
 :when :unless :if ... :ensure <this place> :after"
   :set #'leaf-keywords-set-keywords
