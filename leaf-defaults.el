@@ -82,17 +82,14 @@
 If FORCE is non-nil, append our element without any conditions."
   (when (or force (not leaf-defaults-init-frg))
     (setq leaf-keywords-after-conditions
-          (append leaf-defaults-before-protection leaf-keywords-after-conditions)))
+          (append leaf-defaults-before-protection leaf-keywords-after-conditions))
 
-  (when (or force (not leaf-defaults-init-frg))
     (setq leaf-keywords-after-conditions
-          (append leaf-defaults-before-protection leaf-keywords-after-conditions)))
+          (append leaf-defaults-before-protection leaf-keywords-after-conditions))
 
-  (when (or force (not leaf-defaults-init-frg))
     (setq leaf-defaults-normalize
-          (append leaf-defaults-normalize leaf-keywords-normalize)))
+          (append leaf-defaults-normalize leaf-keywords-normalize))
 
-  (when (or force (not leaf-defaults-init-frg))
     (leaf-keywords-init))
 
   (setq leaf-defaults-init-frg t))
