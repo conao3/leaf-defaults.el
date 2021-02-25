@@ -31,6 +31,7 @@
 (require 'cl-lib)
 (require 'leaf)
 (require 'leaf-keywords)
+(require 'leaf-defaults-recipe)
 
 (defgroup leaf-defaults nil
   "Awesome leaf config collections."
