@@ -24,20 +24,80 @@
   - [[#contributors][Contributors]]
 
 * Description
-[[https://github.com/conao3/leaf-defaults.el][https://raw.githubusercontent.com/conao3/files/master/blob/leaf-defaults.el/leaf-defaults.gif]]
-
 Awesome leaf config collections.
 
 * Install
 Sample install code using [[https://github.com/conao3/leaf.el][leaf.el]].
 
 #+begin_src emacs-lisp
-  (leaf leaf-defaults :ensure t)
+  (leaf leaf-defaults
+    :ensure t
+    :config
+    (leaf-defaults-init))
 #+end_src
 
 * Usage
+** :defaults keyword
+This is a keyword that calls a dynamically named function.
 
-* Customize
+If you define various settings for this function in a separate
+file, you may be able to reduce the number of lines in
+init.el.  This is a one of use case of this.
+
+Also, if you distribute the functions to be used, someone can use
+your recommended settings.
+
+#+begin_src emacs-lisp
+  (cort-deftest-with-macroexpand leaf/defaults
+    '(((leaf helm
+         :ensure t
+         :defaults t)
+       (prog1 'helm
+         (leaf-handler-package helm helm nil)
+         (leaf-keywords-defaults--leaf/helm)))
+
+      ((leaf helm
+         :when nil
+         :ensure t
+         :defaults t)
+       (prog1 'helm
+         (when nil
+           (leaf-handler-package helm helm nil)
+           (leaf-keywords-defaults--leaf/helm))))
+
+      ((leaf helm
+         :ensure t
+         :defaults conao3)
+       (prog1 'helm
+         (leaf-handler-package helm helm nil)
+         (leaf-keywords-defaults--conao3/helm)))
+
+      ((leaf helm
+         :ensure t
+         :defaults conao3 garario3)
+       (prog1 'helm
+         (leaf-handler-package helm helm nil)
+         (leaf-keywords-defaults--conao3/helm)
+         (leaf-keywords-defaults--garario3/helm)))
+
+      ((leaf helm
+         :ensure t
+         :defaults conao3
+         :defaults garario3)
+       (prog1 'helm
+         (leaf-handler-package helm helm nil)
+         (leaf-keywords-defaults--conao3/helm)
+         (leaf-keywords-defaults--garario3/helm)))
+
+      ((leaf helm
+         :ensure t
+         :defaults nil
+         :defaults conao3
+         :defaults garario3)
+       (prog1 'helm
+         (leaf-handler-package helm helm nil)))))
+#+end_src
+
 
 * Information
 ** Community
