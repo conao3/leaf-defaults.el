@@ -77,6 +77,7 @@
 
 (defvar leaf-defaults-init-frg nil)
 
+;;;###autoload
 (defun leaf-defaults-init (&optional force)
   "Initialize leaf-defaults, add :defaults, :convert-defaults for `leaf.'.
 If FORCE is non-nil, append our element without any conditions."
