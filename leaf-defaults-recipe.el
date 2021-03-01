@@ -37,7 +37,8 @@
   (eval-and-compile
     (require 'leaf)
     (require 'leaf-keywords)
-    (leaf-keywords-init))
+    (leaf-keywords-init)
+    (declare-function blackout "blackout"))
 
   (leaf *leaf-keywords-config
     :preface
