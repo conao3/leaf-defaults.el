@@ -177,7 +177,7 @@
              (scroll-bar-mode)
              (indent-tabs-mode))
     :config
-    (defalias 'yes-or-no-p 'y-or-n-p)
+    (defalias 'yes-or-no-p #'y-or-n-p)
     (keyboard-translate 8 127))
 
   (leaf ddskk-posframe
