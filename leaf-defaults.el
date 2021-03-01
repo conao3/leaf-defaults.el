@@ -58,12 +58,10 @@
 
 (defcustom leaf-defaults-normalize
   '(((memq leaf--key '(:defaults))
-     (let ((ret (leaf-flatten leaf--value)))
-       (unless (eq nil (car ret))
-         (mapcar
-          (lambda (elm)
-            (intern (format "leaf-keywords-defaults--%s/%s" (if (eq t elm) "leaf" elm) leaf--name)))
-          (delete-dups ret)))))
+     (mapcar
+      (lambda (elm)
+        (intern (format "leaf-keywords-defaults--%s/%s" (if (eq t elm) "leaf" elm) leaf--name)))
+      (delete nil (delete-bups (leaf-flatten leaf--value)))))
 
     ((memq leaf--key '(:convert-defaults))
      (let* ((key (car leaf--value))
