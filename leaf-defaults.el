@@ -77,7 +77,7 @@
 
 ;;;###autoload
 (defun leaf-defaults-init (&optional force)
-  "Initialize leaf-defaults, add :defaults, :convert-defaults for `leaf.'.
+  "Initialize `leaf-defaults', add :defaults, :convert-defaults for `leaf.'.
 If FORCE is non-nil, append our element without any conditions."
   (when (or force (not leaf-defaults-init-frg))
     (setq leaf-keywords-after-conditions
