@@ -1,150 +1,128 @@
-#+author: conao3
-#+date: <2020-03-20 Fri>
+#+title: leaf-defaults.el
+#+author: Naoya Yamashita
 
-[[https://github.com/conao3/leaf-defaults.el][https://raw.githubusercontent.com/conao3/files/master/blob/headers/png/leaf-defaults.el.png]]
+Shareable default configurations for leaf.el packages.
+
 [[https://github.com/conao3/leaf-defaults.el/blob/master/LICENSE][https://img.shields.io/github/license/conao3/leaf-defaults.el.svg?style=flat-square]]
 [[https://github.com/conao3/leaf-defaults.el/releases][https://img.shields.io/github/tag/conao3/leaf-defaults.el.svg?style=flat-square]]
 [[https://github.com/conao3/leaf-defaults.el/actions][https://github.com/conao3/leaf-defaults.el/workflows/Main%20workflow/badge.svg]]
-[[https://app.codacy.com/project/conao3/leaf-defaults.el/dashboard][https://img.shields.io/codacy/grade/62a36f4f04524d5e8c758440e8071c45.svg?logo=codacy&style=flat-square]]
-[[https://www.patreon.com/conao3][https://img.shields.io/badge/patreon-become%20a%20patron-orange.svg?logo=patreon&style=flat-square]]
-[[https://twitter.com/conao_3][https://img.shields.io/badge/twitter-@conao__3-blue.svg?logo=twitter&style=flat-square]]
-[[https://conao3-support.slack.com/join/shared_invite/enQtNjUzMDMxODcyMjE1LWUwMjhiNTU3Yjk3ODIwNzAxMTgwOTkxNmJiN2M4OTZkMWY0NjI4ZTg4MTVlNzcwNDY2ZjVjYmRiZmJjZDU4MDE][https://img.shields.io/badge/chat-on_slack-blue.svg?logo=slack&style=flat-square]]
 
-* Table of Contents
-- [[#description][Description]]
-- [[#install][Install]]
-- [[#usage][Usage]]
-- [[#customize][Customize]]
-- [[#information][Information]]
-  - [[#community][Community]]
-  - [[#contribution][Contribution]]
-  - [[#migration][Migration]]
-  - [[#license][License]]
-  - [[#author][Author]]
-  - [[#contributors][Contributors]]
+* Overview
 
-* Description
-Awesome leaf config collections.
+leaf-defaults provides a =:defaults= keyword for [[https://github.com/conao3/leaf.el][leaf.el]] that enables users to apply pre-configured settings to packages. This allows you to:
 
-* Install
-Sample install code using [[https://github.com/conao3/leaf.el][leaf.el]].
+- Share recommended configurations with other users
+- Reduce boilerplate in your init.el
+- Apply curated defaults from the community
+
+* Requirements
+
+- Emacs 26.1 or later
+- [[https://github.com/conao3/leaf.el][leaf.el]] 4.1 or later
+- [[https://github.com/conao3/leaf-keywords.el][leaf-keywords]] 1.1 or later
+
+* Installation
+
+Using leaf.el:
 
 #+begin_src emacs-lisp
-  (leaf leaf-defaults
-    :ensure t
-    :config
-    (leaf-defaults-init))
+(leaf leaf-defaults
+  :ensure t
+  :config
+  (leaf-defaults-init))
 #+end_src
 
 * Usage
-** :defaults keyword
-This is a keyword that calls a dynamically named function.
 
-If you define various settings for this function in a separate
-file, you may be able to reduce the number of lines in
-init.el.  This is a one of use case of this.
+** The :defaults Keyword
 
-Also, if you distribute the functions to be used, someone can use
-your recommended settings.
+The =:defaults= keyword calls dynamically named functions that apply pre-configured settings to a package. When set to =t=, it uses the built-in leaf defaults. You can also specify custom configuration providers.
+
+*** Basic Usage
+
+Apply built-in defaults:
 
 #+begin_src emacs-lisp
-  (cort-deftest-with-macroexpand leaf/defaults
-    '(((leaf helm
-         :ensure t
-         :defaults t)
-       (prog1 'helm
-         (leaf-handler-package helm helm nil)
-         (leaf-keywords-defaults--leaf/helm)))
-
-      ((leaf helm
-         :when nil
-         :ensure t
-         :defaults t)
-       (prog1 'helm
-         (when nil
-           (leaf-handler-package helm helm nil)
-           (leaf-keywords-defaults--leaf/helm))))
-
-      ((leaf helm
-         :ensure t
-         :defaults conao3)
-       (prog1 'helm
-         (leaf-handler-package helm helm nil)
-         (leaf-keywords-defaults--conao3/helm)))
-
-      ((leaf helm
-         :ensure t
-         :defaults conao3 garario3)
-       (prog1 'helm
-         (leaf-handler-package helm helm nil)
-         (leaf-keywords-defaults--conao3/helm)
-         (leaf-keywords-defaults--garario3/helm)))
-
-      ((leaf helm
-         :ensure t
-         :defaults conao3
-         :defaults garario3)
-       (prog1 'helm
-         (leaf-handler-package helm helm nil)
-         (leaf-keywords-defaults--conao3/helm)
-         (leaf-keywords-defaults--garario3/helm)))
-
-      ((leaf helm
-         :ensure t
-         :defaults nil
-         :defaults conao3
-         :defaults garario3)
-       (prog1 'helm
-         (leaf-handler-package helm helm nil)))))
+(leaf company
+  :ensure t
+  :defaults t)
 #+end_src
 
+This expands to:
 
-* Information
-** Community
-Any feedback or suggestions are welcome!
+#+begin_src emacs-lisp
+(prog1 'company
+  (leaf-handler-package company company nil)
+  (leaf-keywords-defaults--leaf/company))
+#+end_src
 
-You can use github issues, but you can also use [[https://conao3-support.slack.com/join/shared_invite/enQtNjUzMDMxODcyMjE1LWUwMjhiNTU3Yjk3ODIwNzAxMTgwOTkxNmJiN2M4OTZkMWY0NjI4ZTg4MTVlNzcwNDY2ZjVjYmRiZmJjZDU4MDE][Slack]]
-if you want a more casual conversation.
+*** Custom Configuration Providers
 
-** Contribution
-We welcome PR!
+Specify one or more configuration providers:
 
-*** Require tools for testing
-- keg
-  #+begin_src shell
-    cd ~/
-    hub clone conao3/keg .keg
-    export PATH="$HOME/.keg/bin:$PATH"
-  #+end_src
+#+begin_src emacs-lisp
+;; Single provider
+(leaf helm
+  :ensure t
+  :defaults conao3)
 
-*** Running test
-Below operation flow is recommended.
+;; Multiple providers
+(leaf helm
+  :ensure t
+  :defaults conao3 other-user)
+#+end_src
+
+*** Combining with Conditions
+
+The =:defaults= keyword respects conditional keywords:
+
+#+begin_src emacs-lisp
+(leaf helm
+  :when (display-graphic-p)
+  :ensure t
+  :defaults t)
+#+end_src
+
+** Included Package Configurations
+
+The package ships with sensible defaults for common packages:
+
+- =company= - Completion framework with optimized settings
+- =flycheck= - On-the-fly syntax checking
+- =ivy= / =swiper= / =counsel= - Completion and search
+- =paren= - Parenthesis highlighting
+- Built-in packages: =cus-edit=, =cus-start=, =delsel=, =files=, =simple=, =startup=
+
+Load a bundle of base configurations:
+
+#+begin_src emacs-lisp
+(leaf-defaults-recipe--leaf-defaults/base)
+#+end_src
+
+* Contributing
+
+Contributions are welcome. Please open an issue or submit a pull request.
+
+** Development Setup
+
+Install [[https://github.com/conao3/keg][keg]] for testing:
+
 #+begin_src shell
-  git branch [feature-branch]       # Create branch named [feature-branch]
-  git checkout [feature-branch]     # Checkout branch named [feature-branch]
-
-  # <edit loop>
-  emacs leaf-defaults.el             # Edit something you want
-
-  make test                         # Test leaf-defaults
-  git commit -am "brabra"           # Commit (auto-run test before commit)
-  # </edit loop>
-
-  hub fork                          # Create fork at GitHub
-  git push [user] [feature-branch]  # Push feature-branch to your fork
-  hub pull-request                  # Create pull-request
+git clone https://github.com/conao3/keg ~/.keg
+export PATH="$HOME/.keg/bin:$PATH"
 #+end_src
 
-** Migration
+** Workflow
 
-** License
-#+begin_example
-  General Public License Version 3 (GPLv3)
-  Copyright (c) Naoya Yamashita - https://conao3.com
-  https://github.com/conao3/leaf-defaults.el/blob/master/LICENSE
-#+end_example
+#+begin_src shell
+git checkout -b feature-branch
+# Make your changes
+make test
+git commit -am "Description of changes"
+#+end_src
 
-** Author
-- Naoya Yamashita ([[https://github.com/conao3][conao3]])
+* License
 
-** Contributors
+GPL-3.0. See [[https://github.com/conao3/leaf-defaults.el/blob/master/LICENSE][LICENSE]] for details.
+
+Copyright (C) Naoya Yamashita
