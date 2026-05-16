@@ -18,8 +18,8 @@ leaf-defaults provides a =:defaults= keyword for [[https://github.com/conao3/lea
 * Requirements
 
 - Emacs 26.1 or later
-- [[https://github.com/conao3/leaf.el][leaf.el]] 4.1 or later
-- [[https://github.com/conao3/leaf-keywords.el][leaf-keywords]] 1.1 or later
+- [[https://github.com/conao3/leaf.el][leaf.el]] 4.5.5 or later
+- [[https://github.com/conao3/leaf-keywords.el][leaf-keywords]] 2.0.8 or later
 
 * Installation
 
