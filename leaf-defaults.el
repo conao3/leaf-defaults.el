@@ -31,7 +31,6 @@
 (require 'cl-lib)
 (require 'leaf)
 (require 'leaf-keywords)
-(require 'leaf-defaults-recipe)
 
 (defgroup leaf-defaults nil
   "Awesome leaf config collections."
@@ -58,10 +57,12 @@
 
 (defcustom leaf-defaults-normalize
   '(((memq leaf--key '(:defaults))
-     (mapcar
-      (lambda (elm)
-        (intern (format "leaf-keywords-defaults--%s/%s" (if (eq t elm) "leaf" elm) leaf--name)))
-      (delete nil (delete-bups (leaf-flatten leaf--value)))))
+     (let ((ret (delete-dups (leaf-flatten leaf--value))))
+       (unless (eq nil (car ret))
+         (mapcar
+          (lambda (elm)
+            (intern (format "leaf-keywords-defaults--%s/%s" (if (eq t elm) "leaf" elm) leaf--name)))
+          (delete nil ret)))))
 
     ((memq leaf--key '(:convert-defaults))
      (let* ((key (car leaf--value))
@@ -80,13 +81,13 @@
   "Initialize `leaf-defaults', add :defaults, :convert-defaults for `leaf.'.
 If FORCE is non-nil, append our element without any conditions."
   (when (or force (not leaf-defaults-init-frg))
-    (setq leaf-keywords-after-conditions
-          (append leaf-defaults-before-protection leaf-keywords-after-conditions))
+    (setq leaf-keywords-before-protection
+          (append leaf-defaults-before-protection leaf-keywords-before-protection))
 
     (setq leaf-keywords-after-conditions
-          (append leaf-defaults-before-protection leaf-keywords-after-conditions))
+          (append leaf-defaults-after-conditions leaf-keywords-after-conditions))
 
-    (setq leaf-defaults-normalize
+    (setq leaf-keywords-normalize
           (append leaf-defaults-normalize leaf-keywords-normalize))
 
     (leaf-keywords-init))
